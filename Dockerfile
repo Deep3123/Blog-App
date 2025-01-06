@@ -1,12 +1,20 @@
-# init a base image (Alpine is small Linux distro)
-FROM python:3.7.1
-# define the present working directory
+# Use a lightweight Python base image
+FROM python:3.7-slim
+
+# Define the working directory inside the container
 WORKDIR /docker-flask-test
-# copy the contents into the working dir
-ADD . /docker-flask-test
-# run pip to install the dependencies of the flask app
-RUN pip install -r requirements.txt
-# Exposing port
+
+# Copy the project contents into the working directory
+COPY . /docker-flask-test
+
+# Upgrade pip to the latest version
+RUN python -m pip install --upgrade pip
+
+# Install the dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose port 4455 for the Flask app
 EXPOSE 4455
-# define the command to start the container
-CMD ["python","run.py"]
+
+# Define the default command to run the app
+CMD ["python", "run.py"]
